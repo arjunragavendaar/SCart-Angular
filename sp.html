@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<title>SCart</title>
+</head>
+<body>
+  <div class="w3-row" >
+  	<div class="w3-third w3-container"><h1>S<span class="glyphicon glyphicon-shopping-cart" style="color: black;"></span>Cart</h1></div>
+  	<div class="w3-third w3-container"></div>
+	<div class="w3-third w3-container"></div>
+</div>
+	<div ng-app="shop" ng-controller="myctrl" >
+		<div class="w3-row" >
+		<div class="w3-third w3-container">
+		<div id="admin" class="w3-card-2 w3-margin" style="max-width:410px;">
+			<header class="w3-container w3-light-grey w3-padding-16">
+	<h1> <span class="glyphicon glyphicon-list-alt" style="color: green;"></span> Product Lists</h1>
+</header>
+
+	<ul class="w3-ul">
+		<li ng-repeat="x in names" class="w3-padding-16"> {{x}} <span ng-click="remove($index)"   class="w3-right w3-margin-right" style="cursor: pointer; ">X</span></li>
+	</ul>
+	 <div class="w3-container w3-light-grey w3-padding-16">
+    <div class="w3-row w3-margin-top">
+	<div  class="w3-col s10">
+	<input ng-model="addme" class="w3-input w3-border w3-padding" placeholder="Add the Item Here" style="max-width:310px;"></div>
+	<div  class="w3-col s2">
+	<button class="w3-btn w3-padding w3-green" ng-disabled="!addme.length" ng-click="add()" style="max-width:100%;">Add</button>
+</div>
+</div>
+</div>
+	<h3>{{txt}}</h3>
+</div>
+</div>
+<div class="w3-third w3-container">
+<div id="search" class="w3-card-2 w3-margin" style="max-width:410px;">
+	<header class="w3-container w3-light-grey w3-padding-16">
+	<h1> <span class="glyphicon glyphicon-search" style="color: green;"></span>User Search</h1>
+</header>
+ <div class="w3-container w3-light-grey w3-padding-16">
+    <div class="w3-row w3-margin-top">
+<div  class="w3-col s10">
+	<input  class="w3-input w3-border w3-padding" ng-model="user" placeholder="search here" style="max-width: 290px;">
+</div>
+<div  class="w3-col s2">
+	<button  class="w3-btn w3-padding w3-green" ng-disabled="!user.length" ng-click="uadd()" style="max-width:100% ">+Cart</button>
+</div>
+</div>
+</div>
+	<ul class="w3-ul">
+		<li  class="w3-padding-16" ng-hide="!user.length" ng-repeat="x in names | filter:user" ng-click="slct(x)">{{x}}</li>
+	</ul>
+</div>
+</div>
+<div class="w3-third w3-container">
+<div id="cart"  class="w3-card-2 w3-margin" style="max-width:360px;">
+	<header class="w3-container w3-light-grey w3-padding-16">
+<h1> <span class="glyphicon glyphicon-shopping-cart" style="color: green;"></span>Your cart</h1>
+</header>
+	<ul class="w3-ul">
+		<li  class="w3-padding-16" ng-repeat="x in lit"> {{x}} <span   class="w3-right w3-margin-right" ng-click="remove1($index)" style="cursor: pointer;">X</span></li>
+	</ul>
+	 <div class="w3-container w3-light-grey w3-padding-16">
+    <div class="w3-row w3-margin-top">
+	<h3>{{xt}}</h3>
+	<h3>&nbsp <span class="glyphicon glyphicon-tags" style="color: green;"></span> Items in Cart:<span style="color:green;">{{xxt}}</span></h3>
+</div>
+</div>
+	</div>
+</div>
+</div>
+</div>
+<script>
+	var app=angular.module("shop",[]);
+	app.controller("myctrl",function($scope){
+		var count=0;
+    $scope.names=[];
+    $scope.lit=[];
+    $scope.xxt=count;
+    $scope.slct=function(x)
+    {
+    	$scope.user=x;
+    }
+    $scope.add= function()
+    {   
+           
+
+    	if($scope.names.indexOf($scope.addme.toLowerCase())==-1)
+    	{
+    		$scope.names.push($scope.addme.toLowerCase());
+
+    		$scope.addme="";
+    		$scope.txt="";
+    	}
+    	else
+    	{
+    		$scope.txt="Already Added!!!";
+    	}
+    	
+    }
+    $scope.remove=function(x)
+    {
+    	$scope.names.splice(x,1);
+
+    }
+
+     $scope.remove1=function(x)
+    {
+    	$scope.lit.splice(x,1);
+    	count=count-1;
+    	$scope.xxt=count;
+    	$scope.xt="";
+    }
+    $scope.uadd=function()
+    {
+      if($scope.names.indexOf($scope.user.toLowerCase())==-1)
+      {
+       $scope.xt=" Searched item is unavailable";
+
+      }
+      else
+      {  
+      	if($scope.lit.indexOf($scope.user.toLowerCase())==-1)
+      	{
+      	$scope.lit.push($scope.user.toLowerCase());
+      	count=count+1;
+      	$scope.user="";
+      	$scope.xt="";
+      	$scope.xxt=count;
+      }
+      else
+      {
+      	$scope.xt="You have already added this item in the cart";
+      }
+        }
+    }
+	});
+</script>
+</body>
+</html>
